@@ -4,6 +4,9 @@ import { initialTodos } from './services/initialTodos.services';
 import { PostForm } from './components/PostForm';
 import { useState } from 'react';
 import { Todos } from './types/todos';
+import { getUser } from './services/user.service';
+import usersFromServer from './api/users';
+
 
 function getNewTodoId(todos: Todos[]) {
   const maxId = Math.max(...todos.map(todo => todo.id));
@@ -14,10 +17,13 @@ function getNewTodoId(todos: Todos[]) {
 export const App = () => {
   const [todos, setTodos] = useState<Todos[]>(initialTodos);
 
-  const addTodo = ({ id, ...data }: Todos) => {
-    const newTodo = {
+  const addTodo = ({title, userId} : {title:string; userId:number}) => {
+    const newTodo : Todos = {
       id: getNewTodoId(todos),
-      ...data,
+      title,
+      userId,
+      completed:false,
+      user: getUser(userId)
     };
 
     setTodos(currentTodos => [...currentTodos, newTodo]);
@@ -26,7 +32,9 @@ export const App = () => {
   return (
     <div className="App">
       <h1>Add todo form</h1>
-      <PostForm onSubmit={addTodo} />
+      <PostForm 
+      users={usersFromServer}
+      onSubmit={addTodo} />
       <TodoList todos={todos} />
     </div>
   );

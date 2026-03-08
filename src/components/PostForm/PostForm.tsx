@@ -1,14 +1,13 @@
 import './PostForm.scss';
 import { useState } from 'react';
-import { getUser } from '../../services/user.service';
-import usersFromServer from '../../api/users';
-import { Todos } from '../../types/todos';
+import { User } from '../../types/user';
 
 type Props = {
-  onSubmit: (todos: Todos) => void;
+  onSubmit: (data:{title:string; userId:number}) => void;
+  users: User[];
 };
 
-export const PostForm: React.FC<Props> = ({ onSubmit }) => {
+export const PostForm: React.FC<Props> = ({ onSubmit }, { users }) => {
   const [title, setTitle] = useState('');
   const [hasTitleError, setHasTitleError] = useState(false);
 
@@ -39,11 +38,8 @@ export const PostForm: React.FC<Props> = ({ onSubmit }) => {
     setChooseUser(0);
 
     onSubmit({
-      id: 0,
-      title: title,
+      title,
       userId: chooseUser,
-      completed: false,
-      user: getUser(chooseUser),
     });
   };
 
@@ -74,7 +70,7 @@ export const PostForm: React.FC<Props> = ({ onSubmit }) => {
           <option value="0" disabled>
             Choose a user
           </option>
-          {usersFromServer.map(user => (
+          {users.map((user:User) => (
             <option key={user.id} value={user.id}>
               {user.name}
             </option>
