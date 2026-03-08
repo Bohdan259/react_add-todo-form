@@ -1,13 +1,18 @@
 import './UserInfo.scss';
-import { User } from '../../types/user';
+import { Todos } from '../../types/todos';
 
 type Props = {
-  user: User | undefined;
+  todo: Todos;
 };
-export const UserInfo: React.FC<Props> = ({ user }) => {
+
+export const UserInfo: React.FC<Props> = ({ todo }) => {
+  if (!todo.user) {
+    return null;
+  }
+
   return (
-    <a className="UserInfo" href={user?.email}>
-      {user?.name}
+    <a className="UserInfo" href={`mailto:${todo.user.email}`}>
+      {todo.user.name}
     </a>
   );
 };
