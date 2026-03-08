@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { User } from '../../types/user';
 
 type Props = {
-  onSubmit: (data:{title:string; userId:number}) => void;
+  onSubmit: (data: { title: string; userId: number }) => void;
   users: User[];
 };
 
@@ -70,7 +70,7 @@ export const PostForm: React.FC<Props> = ({ onSubmit }, { users }) => {
           <option value="0" disabled>
             Choose a user
           </option>
-          {users.map((user:User) => (
+          {users.map((user: User) => (
             <option key={user.id} value={user.id}>
               {user.name}
             </option>
